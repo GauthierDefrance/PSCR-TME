@@ -12,3 +12,5 @@ compile_commands.json
 
 # Configuration locale de l'éditeur, propre à chaque poste.
 .vscode/
+
+TME1/.idea/
