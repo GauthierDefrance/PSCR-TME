@@ -18,6 +18,37 @@ static std::string cleanWord(const std::string& raw) {
 	return w;
 }
 
+
+static bool alreadySeen(const std::string& word, const std::vector<std::string>& words) {
+	for (const auto& w : words) {
+		if (word == w) return true;
+	}
+	return false;
+}
+
+static bool alreadySeenAndIncrement(const std::string& word, std::vector<std::pair<int, std::string>>& words) {
+	for (auto& w : words) {
+		if (word == w.second)
+		{
+			w.first++;
+			return true;
+		}
+	}
+	return false;
+}
+
+static int searchWordFreq(const std::string& word, const std::vector<std::pair<int, std::string>>& words)
+{
+	for (auto& w : words) {
+		if (word == w.second)
+		{
+			return w.first;
+		}
+	}
+	return 0;
+}
+
+
 int main(int argc, char** argv) {
 	using namespace std;
 	using namespace std::chrono;
@@ -25,7 +56,7 @@ int main(int argc, char** argv) {
 	// Allow filename as optional first argument, default to project-root/WarAndPeace.txt
 	// Optional second argument is mode (e.g. "count" or "unique").
 	string filename = "../WarAndPeace.txt";
-	string mode = "count";
+	string mode = "freq";
 	if (argc > 1) filename = argv[1];
 	if (argc > 2) mode = argv[2];
 
@@ -54,8 +85,10 @@ int main(int argc, char** argv) {
 
 			// word est maintenant "tout propre"
 			if (nombre_lu % 100 == 0)
+			{
 				// on affiche un mot "propre" sur 100
 				cout << nombre_lu << ": "<< word << endl;
+			}
 			nombre_lu++;
 		}
 	input.close();
@@ -65,23 +98,61 @@ int main(int argc, char** argv) {
 	} else if (mode == "unique") {
 		// skeleton for unique mode
 		// before the loop: declare a vector "seen"
-		// TODO
+
+		std::vector<string> uniqueWords;
+
+		uniqueWords.reserve(25000);
+		int i = 0;
 
 		while (input >> word) {
 			// élimine la ponctuation et les caractères spéciaux
 			word = cleanWord(word);
 			if (word.empty()) continue;
 
-			// add to seen if it is new
-			// TODO
+			// Skip if not new
+			if (alreadySeen(word, uniqueWords)) continue;
+
+			i++;
+			uniqueWords.push_back(word);
+			std::cout << word << ":" << i << std::endl;
+
 		}
 	input.close();
-	// TODO
-	// cout << "Found " << seen.size() << " unique words." << endl;
+	cout << "Found " << uniqueWords.size() << " unique words." << endl;
 
-	} else {
+	} else if (mode == "freq")
+	{
+
+		std::vector<std::pair<int, std::string>> uniqueWords;
+		uniqueWords.reserve(25000);
+
+		while (input >> word) {
+			// élimine la ponctuation et les caractères spéciaux
+			word = cleanWord(word);
+			if (word.empty()) continue;
+
+			// Skip if not new
+			if (alreadySeenAndIncrement(word, uniqueWords)) continue;
+
+			uniqueWords.emplace_back(1, word);
+		}
+		input.close();
+		cout << "Found " << uniqueWords.size() << " unique words." << endl;
+
+		cout << "Printing words and their frequency " << endl;
+
+		cout << "war :" << searchWordFreq("war", uniqueWords) << endl;
+		cout << "peace :" << searchWordFreq("peace", uniqueWords) << endl;
+		cout << "toto :" << searchWordFreq("toto", uniqueWords) << endl;
+
+
+		input.close();
+	}
+
+
+	else {
 		// unknown mode: print usage and exit
-		cerr << "Unknown mode '" << mode << "'. Supported modes: count, unique" << endl;
+		cerr << "Unknown mode '" << mode << "'. Supported modes: count, unique, freq" << endl;
 		input.close();
 		return 1;
 	}
@@ -92,3 +163,6 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
+
+
+

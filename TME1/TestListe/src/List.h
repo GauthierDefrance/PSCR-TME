@@ -42,6 +42,6 @@ public:
 };
 
 
-std::ostream & operator<< (std::ostream & os, const List & vec) ;
+inline std::ostream & operator<< (std::ostream & os, const List & vec) ;
 
 } /* namespace pr */
