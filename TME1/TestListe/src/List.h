@@ -1,5 +1,4 @@
-#ifndef SRC_LIST_H_
-#define SRC_LIST_H_
+#pragma once
 
 #include <cstddef>
 #include <string>
@@ -35,9 +34,7 @@ public:
 
 	void push_back (const std::string& val) ;
 
-	void push_front (const std::string& val) {
-		tete = new Chainon(val,tete);
-	}
+	void push_front (const std::string& val);
 
 	bool empty() ;
 
@@ -48,5 +45,3 @@ public:
 std::ostream & operator<< (std::ostream & os, const List & vec) ;
 
 } /* namespace pr */
-
-#endif /* SRC_LIST_H_ */
