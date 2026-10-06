@@ -29,6 +29,26 @@ static int searchWordFreq(const std::string& word, const std::unordered_map<std:
 	return 0;
 }
 
+static int searchWordFreq(const std::string& word, const std::vector<WordCount>& pairs) {
+	for (const auto& p : pairs) {
+		if (p.first == word) return p.second;
+	}
+	return 0;
+}
+
+static void sortAndPrintTop(const std::vector<WordCount>& pairs, int n) {
+	auto sorted = pairs;  // copie, on ne modifie pas l'original
+	std::sort(sorted.begin(), sorted.end(), [](const auto& a, const auto& b) {
+		return a.second > b.second;  // ici le compteur est en .second
+	});
+
+	std::cout << "The ten most commons words" << std::endl;
+	int limit = std::min(n, static_cast<int>(sorted.size()));
+	for (int i = 0; i < limit; i++) {
+		std::cout << sorted[i].first << " : " << sorted[i].second << std::endl;
+	}
+}
+
 // Tri et affichage (on copie dans un vecteur temporaire pour trier par valeur)
 static void sortAndPrintTop(const std::unordered_map<std::string, int>& wordCounts, int n)
 {
@@ -109,7 +129,7 @@ int main(int argc, char** argv) {
 	// Allow filename as optional first argument, default to project-root/WarAndPeace.txt
 	// Optional second argument is mode (e.g. "count" or "unique").
 	string filename = "../WarAndPeace.txt";
-	string mode = "freqstd";
+	string mode = "freqmap";
 	if (argc > 1) filename = argv[1];
 	if (argc > 2) mode = argv[2];
 
@@ -234,6 +254,26 @@ int main(int argc, char** argv) {
 
 
 
+	}
+
+	else if (mode == "freqmap") {
+		FreqMap fm(25000);
+		while (input >> word) {
+			word = cleanWord(word);
+			if (word.empty()) continue;
+			fm.incrementFrequency(word);
+		}
+		auto pairs = fm.toKeyValuePairs();
+		std::sort(pairs.begin(), pairs.end(),
+				  [](const auto& a, const auto& b) { return a.second > b.second; });
+
+		cout << "Found " << pairs.size() << " unique words." << endl;
+
+		cout << "war :" << searchWordFreq("war", pairs) << endl;
+		cout << "peace :" << searchWordFreq("peace", pairs) << endl;
+		cout << "toto :" << searchWordFreq("toto", pairs) << endl;
+
+		input.close();
 	}
 
 

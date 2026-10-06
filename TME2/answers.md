@@ -87,7 +87,7 @@ in : 8800
 his : 7965
 that : 7806
 was : 7327
-Total runtime (wall clock) : 3277 ms
+Total runtime (wall clock) : 838 ms
 ```
 
 ## Question 6
@@ -114,18 +114,26 @@ in : 8800
 his : 7965
 that : 7806
 was : 7327
-Total runtime (wall clock) : 468 ms
+Total runtime (wall clock) : 103 ms
 ```
 
 
 
 ## Question 7
 
+En mode release, freq prend 838ms à s'éxécuter.
+Alors que freqstd 103ms prend à s'éxécuter.
+L'écart entre les deux s'explique tout simplement par l'ajout de la hashmap !
+dans le premier on a une complexité O(n) à chaque fois qu'on vérifie si on un
+élément est présent dans la la liste de vecteur.
+Soit : O(n²) en supposant le pire scénario.
 
-
+Alors que la hashmap nous permet d'avoir une complexité de
+O(n + log n) dans le pire scénario !
 
 
 ## Question 8
+
 
 ## Question 9
 
