@@ -18,6 +18,41 @@ static std::string cleanWord(const std::string& raw) {
 	return w;
 }
 
+#include <unordered_map> // Ne pas oublier cet include
+
+// Recherche ultra-rapide avec unordered_map
+static int searchWordFreq(const std::string& word, const std::unordered_map<std::string, int>& wordCounts) {
+	auto it = wordCounts.find(word);
+	if (it != wordCounts.end()) {
+		return it->second;
+	}
+	return 0;
+}
+
+// Tri et affichage (on copie dans un vecteur temporaire pour trier par valeur)
+static void sortAndPrintTop(const std::unordered_map<std::string, int>& wordCounts, int n)
+{
+	// Copie de la map vers un vecteur de paires (fréquence, mot)
+	std::vector<std::pair<int, std::string>> vec;
+	vec.reserve(wordCounts.size());
+	for (const auto& [word, count] : wordCounts) {
+		vec.emplace_back(count, word);
+	}
+
+	// Tri par ordre décroissant de la fréquence
+	std::sort(vec.begin(), vec.end(), [](const auto& a, const auto& b) {
+		return a.first > b.first;
+	});
+
+	std::cout << "The ten most commons words" << std::endl;
+
+	int limit = std::min(n, static_cast<int>(vec.size()));
+	for (int i = 0; i < limit; i++)
+	{
+		std::cout << vec[i].second << " : " << vec[i].first << std::endl;
+	}
+}
+
 
 static bool alreadySeen(const std::string& word, const std::vector<std::string>& words) {
 	for (const auto& w : words) {
@@ -36,6 +71,24 @@ static bool alreadySeenAndIncrement(const std::string& word, std::vector<std::pa
 	}
 	return false;
 }
+
+
+static void sortAndPrintTop(const std::vector<std::pair<int, std::string>> &words, int n)
+{
+	auto sortedWords = words;
+
+	// 2. On trie la copie
+	std::sort(sortedWords.begin(), sortedWords.end(), [](const auto& a, const auto& b) {
+		return a.first > b.first; // Plus grand en premier
+	});
+
+	std::cout << "The ten most commons words" << std::endl;
+	for (int i = 0; i < n; i++)
+	{
+		std::cout << sortedWords[i].second << " : " << sortedWords[i].first << std::endl;
+	}
+}
+
 
 static int searchWordFreq(const std::string& word, const std::vector<std::pair<int, std::string>>& words)
 {
@@ -56,7 +109,7 @@ int main(int argc, char** argv) {
 	// Allow filename as optional first argument, default to project-root/WarAndPeace.txt
 	// Optional second argument is mode (e.g. "count" or "unique").
 	string filename = "../WarAndPeace.txt";
-	string mode = "freq";
+	string mode = "freqstd";
 	if (argc > 1) filename = argv[1];
 	if (argc > 2) mode = argv[2];
 
@@ -146,8 +199,43 @@ int main(int argc, char** argv) {
 		cout << "toto :" << searchWordFreq("toto", uniqueWords) << endl;
 
 
+		sortAndPrintTop(uniqueWords, 10);
+
 		input.close();
 	}
+
+
+	else if (mode == "freqstd") {
+
+		std::unordered_map<std::string, int> wordCounts;
+		// Optionnel : réserver de l'espace pour éviter les rehachages fréquents
+		wordCounts.reserve(25000);
+
+		while (input >> word) {
+			// Élimine la ponctuation et les caractères spéciaux
+			word = cleanWord(word);
+			if (word.empty()) continue;
+
+			// Insère le mot s'il n'existe pas (valeur 0 par défaut) et l'incrémente
+			wordCounts[word]++;
+		}
+		input.close();
+
+		cout << "Found " << wordCounts.size() << " unique words." << endl;
+
+		cout << "Printing words and their frequency " << endl;
+
+		cout << "war :" << searchWordFreq("war", wordCounts) << endl;
+		cout << "peace :" << searchWordFreq("peace", wordCounts) << endl;
+		cout << "toto :" << searchWordFreq("toto", wordCounts) << endl;
+
+
+		sortAndPrintTop(wordCounts, 10);
+
+
+
+	}
+
 
 
 	else {

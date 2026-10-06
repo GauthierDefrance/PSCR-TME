@@ -73,9 +73,57 @@ Total runtime (wall clock) : 2142 ms
 
 ## Question 5
 
+
+The 10 mosts commons words are :
+
+```text
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Total runtime (wall clock) : 3277 ms
+```
+
 ## Question 6
 
+
+On obtient une très forte hausse de vitesse en utilisant une HashMap.
+Les résultats sont identiques.
+
+```text
+Parsing ../WarAndPeace.txt (mode=freqstd)
+Found 20332 unique words.
+Printing words and their frequency 
+war :298
+peace :114
+toto :0
+The ten most commons words
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Total runtime (wall clock) : 468 ms
+```
+
+
+
 ## Question 7
+
+
+
+
 
 ## Question 8
 
