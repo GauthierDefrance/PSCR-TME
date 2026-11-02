@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
 	// Allow filename as optional first argument, default to project-root/WarAndPeace.txt
 	// Optional second argument is mode (e.g. "count" or "unique").
 	string filename = "../WarAndPeace.txt";
-	string mode = "freqmap";
+	string mode = "freqhash";
 	if (argc > 1) filename = argv[1];
 	if (argc > 2) mode = argv[2];
 
@@ -276,6 +276,30 @@ int main(int argc, char** argv) {
 		input.close();
 	}
 
+
+	else if (mode == "freqhash") {
+		FreqMap fm(10);
+		while (input >> word) {
+			word = cleanWord(word);
+			if (word.empty()) continue;
+			fm.incrementFrequency(word);
+		}
+		auto pairs = fm.toKeyValuePairs();
+		std::sort(pairs.begin(), pairs.end(),
+				  [](const auto& a, const auto& b) { return a.second > b.second; });
+
+		input.close();
+
+		cout << "Found " << fm.size() << " unique words." << endl;
+
+		cout << "Printing words and their frequency " << endl;
+
+		cout << "war :" << searchWordFreq("war", pairs) << endl;
+		cout << "peace :" << searchWordFreq("peace", pairs) << endl;
+		cout << "toto :" << searchWordFreq("toto", pairs) << endl;
+
+		sortAndPrintTop(pairs, 10);
+	}
 
 
 	else {

@@ -137,4 +137,72 @@ O(n + log n) dans le pire scénario !
 
 ## Question 9
 
+```txt
+Parsing ../WarAndPeace.txt (mode=freqhash)
+Found 20332 unique words.
+Printing words and their frequency 
+war :298
+peace :114
+toto :0
+The ten most commons words
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Total runtime (wall clock) : 207 ms
+```
+
+
+| Nombre de buckets | Temps (Release) |
+|------------------:|----------------:|
+|               100 |          678 ms |
+|             1 024 |          262 ms |
+|            10 000  |          216 ms|
+
+On atteint des score très similaire à celle de base implémenté.
+Notre table semble à première vue tout autant efficace que celle implementé
+de base dans la librairie standard.
+
 ## Question 10 (bonus)
+
+J'ai ajouté un petit print à la fonction grow() afin de pouvoir
+suivre l'évolution (bien que cela soit une petite perte de vitesse).
+
+```txt
+Parsing ../WarAndPeace.txt (mode=freqhash)
+--- Growing buckets of size 10
+--- Growing buckets of size 20
+--- Growing buckets of size 40
+--- Growing buckets of size 80
+--- Growing buckets of size 160
+--- Growing buckets of size 320
+--- Growing buckets of size 640
+--- Growing buckets of size 1280
+--- Growing buckets of size 2560
+--- Growing buckets of size 5120
+--- Growing buckets of size 10240
+--- Growing buckets of size 20480
+Found 20332 unique words.
+Printing words and their frequency 
+war :298
+peace :114
+toto :0
+The ten most commons words
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Total runtime (wall clock) : 235 ms
+```

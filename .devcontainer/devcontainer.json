@@ -1,4 +1,7 @@
 {
   "name": "PSCR",
-  "image": "mcr.microsoft.com/devcontainers/cpp:ubuntu-24.04"
+  "image": "mcr.microsoft.com/devcontainers/cpp:ubuntu-24.04",
+  "features": { "ghcr.io/devcontainers/features/github-cli:1": {} },
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true
 }
